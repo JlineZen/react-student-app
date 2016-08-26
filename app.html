@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="../lib/react.js"></script>
+    <script type="text/javascript" src="../lib/react-dom.js"></script>
+    <script type="text/javascript" src="../lib/browser.min.js"></script>
+    <title>学生管理</title>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+        table th, table td {
+            line-height: 32px;
+            padding: 0 20px;
+            border: 1px solid #ccc;
+        }
+        input {
+            height: 24px;
+            width: 240px;
+            text-indent: 12px;
+            outline: 0;
+            line-height: 24px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/babel">
+        var _student = [
+            {id: 0, name: '黄药师', gender: '男', _delete: false },
+            {id: 1, name: '黄蓉',   gender: '女', _delete: false },
+            {id: 2, name: '郭靖',   gender: '男', _delete: false },
+            {id: 3, name: '洪七',   gender: '男', _delete: false },
+            {id: 4, name: '穆念慈', gender: '女', _delete: false },
+            {id: 5, name: '杨康', gender: '男', _delete: false }
+        ];
+
+        var GenderFilter = React.createClass({
+            handleGenderChange: function() {
+                this.props.genderChange(this.refs.genderFilter.value);
+            },
+
+            render: function() {
+                return (
+                    <p>
+                        <label>性别：</label>
+                        <select ref="genderFilter" onChange={this.handleGenderChange}>
+                            <option value="0">All</option>
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                        </select>
+                    </p>
+                );
+            }
+        });
+
+        var NameFilter = React.createClass({
+            handleNameChange: function() {
+                this.props.nameChange(this.refs.name.value);
+            },
+
+            render: function() {
+                return (
+                        <p>
+                            <label>姓名：</label>
+                            <input type="text" ref="name" placeholder="请输入姓名" onChange={this.handleNameChange} />
+                        </p>
+                );
+            }
+        });
+
+        var StudentItem = React.createClass({
+            handleDelete: function() {
+                this.props.delete(this.props.student.id);
+            },
+
+            render: function() {
+                var student = this.props.student;
+                return (
+                        <tr>
+                            <td>{student.name}</td>
+                            <td>{student.gender}</td>
+                            <td><a href="javascript:void(0);" onClick={this.handleDelete}>删除</a></td>
+                        </tr>
+                );
+            }
+        });
+
+        var StudentTable = React.createClass({
+            filter: function() {
+                var gender = this.props.gender == 0 ? '' : ( this.props.gender == 1 ? '男' : '女'),
+                    name = this.props.name;
+                return this.props.students.filter(function(item){
+                    if(!item._delete) return item;
+                }).map(function(item) {
+                    if (!gender && !name) {
+                        return item;
+                    } else if (gender && !name) {
+                        if (item.gender == gender) return item;
+                    } else if (!gender && name) {
+                        if (item.name == name) return item;
+                    } else if (gender && name) {
+                        if (item.name == name && item.gender == gender) return item;
+                    }
+                });
+            },
+
+            render: function() {
+                var _this = this,
+                    items = this.filter().map(function(item, index) {
+                        if (item) {
+                            return <StudentItem student={item} key={index} delete={_this.props.delete} />
+                        }
+                    });
+                return (
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {items}
+                            </tbody>
+                        </table>
+                );
+            }
+        });
+
+        var StudentApp = React.createClass({
+            getInitialState: function() {
+                return {
+                    students: _student,
+                    gender: 0,
+                    name: ''
+                }
+            },
+
+            _delete: function(id) {
+                var data = this.state.students.map(function(item) {
+                    if (item.id == id) item._delete = true;
+                     return item;
+                });
+                this.setState({students: data});
+            },
+
+            genderFilter: function(gender) {
+                this.setState({gender: gender})
+            },
+
+            nameFilter: function(name) {
+                this.setState({name: name})
+            },
+
+            render: function() {
+                return (
+                        <div>
+                            <GenderFilter genderChange={this.genderFilter}/>
+                            <NameFilter nameChange={this.nameFilter} />
+                            <StudentTable students={this.state.students}
+                                          delete={this._delete}
+                                          gender={this.state.gender}
+                                          name={this.state.name}
+                            />
+                        </div>
+                );
+            }
+        });
+
+        ReactDOM.render(<StudentApp />, document.getElementById('app'));
+    </script>
+</body>
+</html>
