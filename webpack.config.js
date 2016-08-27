@@ -19,16 +19,16 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            output: {
-                comments: false
-            },
-            compress: {
-                warnings: false
-            },
-            sourceMap: false,
-            mangle: false
-        })
+        // new webpack.optimize.UglifyJsPlugin({
+        //     output: {
+        //         comments: false
+        //     },
+        //     compress: {
+        //         warnings: false
+        //     },
+        //     sourceMap: false,
+        //     mangle: false
+        // })
     ],
     resolve: {
 	    modulesDirectories: [

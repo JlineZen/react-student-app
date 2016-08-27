@@ -1,8 +1,9 @@
 import React from 'react';
+import Observer from '../observer/observer';
 
 const NameFilter = React.createClass({
     handleNameChange () {
-        this.props.nameChange(this.refs.name.value);
+        Observer.publish('nameChange', this.refs.name.value);
     },
 
     render () {
@@ -13,6 +14,6 @@ const NameFilter = React.createClass({
             </p>
         );
     }
-})
+});
 
 export default NameFilter;

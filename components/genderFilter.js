@@ -1,8 +1,9 @@
 import React from 'react';
+import Observer from '../observer/observer';
 
 const GenderFilter = React.createClass({
     handleGenderChange() {
-        this.props.genderChange(this.refs.genderFilter.value);
+        Observer.publish('genderChange', this.refs.genderFilter.value);
     },
 
     render()  {

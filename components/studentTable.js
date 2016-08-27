@@ -3,7 +3,7 @@ import StudentItem from './StudentItem';
 
 const StudentTable = React.createClass({
     filter() {
-        var gender = this.props.gender == 0 ? '' : ( this.props.gender == 1 ? '男' : '女'),
+        let gender = this.props.gender == 0 ? '' : ( this.props.gender == 1 ? '男' : '女'),
                     name = this.props.name;
         return this.props.students.filter((item) => {
             if(!item._delete) return item;
@@ -21,7 +21,7 @@ const StudentTable = React.createClass({
     },
 
     render() {
-        var _this = this,
+        let _this = this,
             items = this.filter().map((item, index) => {
                 if (item) {
                     return <StudentItem student={item} key={index} delete={_this.props.delete} />
