@@ -1,8 +1,9 @@
 import React from 'react';
+import Observer from '../observer/observer';
 
 const StudentItem = React.createClass({
     handleDelete() {
-        this.props.delete(this.props.student.id);
+        Observer.publish('deleteStudent', this.props.student.id);
     },
 
     render() {

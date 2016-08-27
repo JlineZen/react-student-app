@@ -2,8 +2,15 @@ import React from 'react';
 import NameFilter from './NameFilter';
 import GenderFilter from './GenderFilter';
 import StudentTable from './StudentTable';
+import Observer from '../observer/observer';
 
 const App = React.createClass({
+    componentDidMount() {
+        Observer.subscribe('deleteStudent', this._delete);
+        Observer.subscribe('genderChange', this.genderFilter);
+        Observer.subscribe('nameChange', this.nameFilter);
+    },
+
     getInitialState() {
         return {
             students: this.props.students,
@@ -21,20 +28,19 @@ const App = React.createClass({
     },
 
     genderFilter(gender) {
-        this.setState({gender: gender})
+       this.setState({gender: gender});
     },
 
     nameFilter(name) {
-        this.setState({name: name})
+       this.setState({name: name})
     },
 
     render() {
         return (
             <div>
-                <GenderFilter genderChange={this.genderFilter}/>
-                <NameFilter nameChange={this.nameFilter} />
+                <GenderFilter />
+                <NameFilter />
                 <StudentTable students={this.state.students}
-                                delete={this._delete}
                                 gender={this.state.gender}
                                 name={this.state.name}
                 />
