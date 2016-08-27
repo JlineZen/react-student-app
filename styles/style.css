@@ -1,0 +1,16 @@
+table {
+    border-collapse: collapse;
+}
+table th, table td {
+    line-height: 32px;
+    padding: 0 20px;
+    border: 1px solid #ccc;
+}
+input {
+    height: 24px;
+    width: 240px;
+    text-indent: 12px;
+    outline: 0;
+    line-height: 24px;
+    border: 1px solid #ccc;
+}
